@@ -1,0 +1,13 @@
+html,
+body,
+.ant-layout,
+#jaeger-ui-root,
+#jaeger-ui-root > div {
+  width: 100%;
+  height: 100%;
+}
+
+.Page--content {
+  width: 100%;
+  height: 100%;
+}

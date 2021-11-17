@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "name": "jagger-generate-graph",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Generate png from graph",
+  "main": "index.js",
+  "repository": "https://github.com/jxnblk/repng.git",
+  "bin": {
+    "jagger-generate-graph": "./cli.js"
+  },
+  "engines": {
+    "node": ">=16.13.0"
+  },
+  "scripts": {
+    "help": "./cli.js --help"
+  },
+  "dependencies": {
+    "get-stdin": "^9.0.0",
+    "meow": "^10.1.1",
+    "ora": "^6.0.1",
+    "playwright": "^1.16.3"
+  }
+}
