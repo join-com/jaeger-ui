@@ -23,6 +23,8 @@ const generate = async (url, data, opts = {}) => {
     waitUntil: 'networkidle',
   });
 
+  page.setDefaultTimeout(60000);
+
   await page.waitForSelector('#jaeger-ui-root');
 
   // eslint-disable-next-line no-shadow
