@@ -44,6 +44,7 @@ const generate = async (url, data, opts = {}) => {
   if (type === 'pdf') {
     // https://playwright.dev/docs/api/class-page#page-pdf
     result = await page.pdf({
+      printBackground: true,
       width,
       height,
     });

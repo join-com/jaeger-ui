@@ -67,7 +67,7 @@ const cli = meow(
       type: {
         type: 'string',
         alias: 't',
-        default: 'png',
+        default: 'pdf',
       },
       label: {
         type: 'string',
