@@ -34,6 +34,7 @@ const cli = meow(
     -w --width      Width of image (required)
     -h --height     Height of image (required)
     -t --type       Type of ouptut (png default) (pdf, jpeg or png)
+    -l --label      Label for the image
     --launcher      Options for browser launcher in JSON format
 `,
   {
@@ -55,18 +56,22 @@ const cli = meow(
         type: 'string',
         alias: 'w',
         isRequired: true,
-        default: '12000',
+        default: '10000',
       },
       height: {
         type: 'string',
         alias: 'h',
         isRequired: true,
-        default: '12000',
+        default: '10000',
       },
       type: {
         type: 'string',
         alias: 't',
         default: 'png',
+      },
+      label: {
+        type: 'string',
+        alias: 'l',
       },
       launcher: {
         type: 'string',
@@ -96,10 +101,15 @@ if (opts.launcher) {
 const run = async () => {
   try {
     const data = await getStdin();
-    const image = await render(url, data, opts);
     const { date, time } = getDateTime();
-    const outFile = opts.filename ? opts.filename : `${date}-${time}.png`;
+    const fileName = `${opts.filename ? `${opts.filename}-` : ''}${date}-${time}`;
+    const outFile = `${fileName}.${opts.type}`;
     const outPath = path.join(opts.outDir, outFile);
+
+    const image = await render(url, JSON.parse(data), {
+      label: fileName,
+      ...opts,
+    });
 
     const file = fs.createWriteStream(outPath);
 

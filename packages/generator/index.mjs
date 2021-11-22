@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 
 const generate = async (url, data, opts = {}) => {
-  const { type } = opts;
+  const { type, label } = opts;
 
   const width = parseInt(opts.width, 10);
   const height = parseInt(opts.height, 10);
@@ -28,9 +28,12 @@ const generate = async (url, data, opts = {}) => {
   await page.waitForSelector('#jaeger-ui-root');
 
   // eslint-disable-next-line no-shadow
-  await page.evaluate(data => {
-    window.postMessage({ cmd: 'setTrace', data }, '*');
-  }, data);
+  await page.evaluate(
+    payload => {
+      window.postMessage({ cmd: 'setTrace', payload }, '*');
+    },
+    { data, label }
+  );
 
   await page.waitForSelector('.plexus');
 

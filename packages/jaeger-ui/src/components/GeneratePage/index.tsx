@@ -21,12 +21,14 @@ import transformTraceData from '../../model/transform-trace-data';
 import './index.css';
 
 function GeneratePage() {
-  const [trace, setTrace] = React.useState<any>();
+  const [trace, setTrace] = React.useState<{ data: any; label: string }>();
 
   React.useEffect(() => {
     const listener = (event: MessageEvent) => {
-      if (typeof event.data === 'object' && event.data.cmd === 'setTrace') {
-        setTrace(JSON.parse(event.data.data));
+      if (typeof event.data === 'object') {
+        if (event.data.cmd === 'setTrace') {
+          setTrace(event.data.payload);
+        }
       }
     };
 
@@ -39,9 +41,14 @@ function GeneratePage() {
     return null;
   }
 
-  const ev = calculateTraceDagEV(transformTraceData(trace.data[0]) as any);
+  const ev = calculateTraceDagEV(transformTraceData(trace.data.data[0]) as any);
 
-  return <TraceGraph ev={ev} />;
+  return (
+    <>
+      <TraceGraph ev={ev} />
+      {trace.label && <div className="Page--label">{trace.label}</div>}
+    </>
+  );
 }
 
 export default GeneratePage;
