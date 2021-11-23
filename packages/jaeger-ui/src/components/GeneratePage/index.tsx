@@ -20,6 +20,22 @@ import transformTraceData from '../../model/transform-trace-data';
 
 import './index.css';
 
+const FIXABLE_OPERATION_NAMES = ['^/api/', '^/graphql'];
+
+function makeSpansUnique(data: any) {
+  const spans = data.spans.map((span: any) => {
+    if (FIXABLE_OPERATION_NAMES.includes(span.operationName)) {
+      const operationName = `${span.operationName}@${span.spanID}`;
+
+      return { ...span, operationName };
+    }
+
+    return span;
+  });
+
+  return { ...data, spans };
+}
+
 function GeneratePage() {
   const [trace, setTrace] = React.useState<{ data: any; label: string }>();
 
@@ -41,7 +57,7 @@ function GeneratePage() {
     return null;
   }
 
-  const ev = calculateTraceDagEV(transformTraceData(trace.data.data[0]) as any);
+  const ev = calculateTraceDagEV(transformTraceData(makeSpansUnique(trace.data.data[0])) as any);
 
   return (
     <>
